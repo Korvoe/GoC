@@ -73,6 +73,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'web_chat.wsgi.application'
 ASGI_APPLICATION = 'web_chat.routing.application'
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
+
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -123,6 +132,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     ('node_modules', os.path.join(BASE_DIR, 'node_modules')),
+    os.path.join(BASE_DIR, 'static'),
 ]
 
 LOGIN_REDIRECT_URL = 'home'
