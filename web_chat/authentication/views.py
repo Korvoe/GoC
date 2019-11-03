@@ -15,5 +15,6 @@ class HomeView(TemplateView):
     template_name = "home.html"
     def get(self, request):
         users = CustomUser.objects.all()
+
         args = {'users': users}
         return render(request, self.template_name, args)
