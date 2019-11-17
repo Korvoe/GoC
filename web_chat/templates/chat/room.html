@@ -50,9 +50,9 @@
         chatSocket.send(JSON.stringify({
             'message': message,
             'from': username,
+            'room_id': roomName,
             'command': 'new_message',
         }));
-
         messageInputDom.value = '';
     };
 
