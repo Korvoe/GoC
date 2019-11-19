@@ -4,8 +4,15 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from .models import Message
 import json
+import rsa
+from django.conf import settings
 
 User = get_user_model()
+# TEMPORARY, we should probably declare that elsewhere !
+(pub_key, priv_key) = (settings.PUB_KEY, settings.PRIV_KEY)
+print("public key (n, e) :(" + str(pub_key.n) + ") ; (" + str(pub_key.e) +")\n")
+print("private key (n, e, d, p, q) :(" + str(priv_key.n) + ") ; (" + str(priv_key.e) + ") ; (" + str(priv_key.d) + ") ; (" + str(priv_key.p) + ") ; (" + str(priv_key.q) + ") \n")
+# need to share the public key with the clients !
 
 class ChatConsumer(WebsocketConsumer):
     def fetch_messages(self, data):
@@ -68,7 +75,17 @@ class ChatConsumer(WebsocketConsumer):
 
     # Receive message from WebSocket
     def receive(self, text_data):
-        data = json.loads(text_data)
+        # Decryption of the ciphertext : message is a string
+        if text_data != '{\"command\":\"fetch_messages\"}' :
+            print(text_data + str(type(text_data)))
+            encodedCipher = text_data.encode('utf8')
+            print(str(encodedCipher) + str(type(encodedCipher)))
+            message = rsa.decrypt(encodedCipher, priv_key)
+            print(message.decode('utf8'))
+        else:
+            message = text_data
+
+        data = json.loads(message)
         self.commands[data['command']](self, data)
 
     def send_chat_message(self, message):

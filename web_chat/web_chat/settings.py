@@ -12,6 +12,12 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 from cryptography.fernet import Fernet
+import rsa
+
+# Sets up the private and public keys for RSA encoding
+# The private key MUST REMAIN PRIVATE !!!
+(PUB_KEY, PRIV_KEY) = rsa.newkeys(512)
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -78,7 +84,7 @@ ASGI_APPLICATION = 'web_chat.routing.application'
 
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
         'CONFIG': {
             "hosts": [('127.0.0.1', 6379)],
         },
