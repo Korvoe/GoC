@@ -2,7 +2,7 @@
 from django.contrib.auth import get_user_model
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
-from .models import Message
+from .models import Message, Thread
 import json
 import rsa
 from django.conf import settings
@@ -29,7 +29,7 @@ class ChatConsumer(WebsocketConsumer):
         message = Message.objects.create(
             author=author_user,
             content=data['message'],
-            room_id = self.room_name)
+            thread=Thread.objects.get(room_id = data['room_id']))
         content = {
             'command': 'new_message',
             'message': self.message_to_json(message)
