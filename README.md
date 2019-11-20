@@ -1,20 +1,28 @@
-1. Download the repository.
-2. When you are in the repository activate the python virtual machine: 
-    $ source bin/activate 
-3. Install all the required python packages:
-    $ pip install -r requirements.txt
-        or
-    $ pip3 install -r requirements.txt
-4. Install Redis:
-    $ wget http://download.redis.io/releases/redis-5.0.5.tar.gz
-    $ tar xzf redis-5.0.5.tar.gz
-5. Run Redis:
-    $ cd redis-5.0.5
-    $ make
-    # src/redis-server
-6. Run django server:
-    $ cd web-chat
-    $ python manage.py runserver
-        or
-    $ python3 manage.py runserver
-    
+Secure web-chat.
+
+The aim of this project is to create a web-chat application, which focuses the users' privacy and security.
+
+OS: Linux
+Python version: 3.7.3
+
+How to install:
+1. $ cd directory/of/the/project/ 
+2. $ make install (run make file to install requirements)
+            or manually
+1. $ cd directory/of/the/project/ 
+2. $ source bin/activate or $ . bin/activate (run the python virtual environment)
+3. $ pip install -r requirements.txt or $ pip3 install -r requirements.txt  (install python packages from requirements.txt)
+4. $ wget http://download.redis.io/releases/redis-5.0.5.tar.gz (download and install redis)
+5. $ tar xzf redis-5.0.5.tar.gz
+5. $ cd redis-5.0.5
+6. $ make or $ make MALLOC=libc (make redis)
+
+How to run:
+1. $ source bin/activate or $ . bin/activate 
+2. $ src/redis-server (run redis server)
+        open a new terminal tab or window
+1. $ source bin/activate or $ . bin/activate
+2. $ cd web-chat
+3. $ python manage.py runserver or $ python3 manage.py runserver (run django server)
+4. Open the 'localhost/8000' in your browser
+
