@@ -12,9 +12,9 @@ How to install:
 1. $ cd directory/of/the/project/ 
 2. $ source bin/activate or $ . bin/activate (run the python virtual environment)
 3. $ pip install -r requirements.txt or $ pip3 install -r requirements.txt  (install python packages from requirements.txt)
-4. $ wget http://download.redis.io/releases/redis-5.0.5.tar.gz (download and install redis)
-5. $ tar xzf redis-5.0.5.tar.gz
-5. $ cd redis-5.0.5
+4. $ wget http://download.redis.io/releases/redis-5.0.7.tar.gz (download and install redis)
+5. $ tar xzf redis-5.0.7.tar.gz
+5. $ cd redis-5.0.7
 6. $ make or $ make MALLOC=libc (make redis)
 
 How to run:
@@ -26,3 +26,6 @@ How to run:
 3. $ python manage.py runserver or $ python3 manage.py runserver (run django server)
 4. Open the 'localhost/8000' in your browser
 
+FIXED:
+1. [SoS] First attack: /redis-5.0.5
+Changed the vulnerable redis-5.0.5 to more secure redis-5.0.7
