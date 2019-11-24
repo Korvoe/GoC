@@ -29,3 +29,5 @@ How to run:
 FIXED:
 1. [SoS] First attack: /redis-5.0.5
 Changed the vulnerable redis-5.0.5 to more secure redis-5.0.7
+2. [ASU] First Attack: X-XSS-Protection header 
+Added X-XSS-Protection header
