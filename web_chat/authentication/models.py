@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from encrypted_model_fields.fields import EncryptedCharField, EncryptedEmailField
+from fernet_fields import EncryptedCharField, EncryptedEmailField
 
 class CustomUser(AbstractUser):
     pass

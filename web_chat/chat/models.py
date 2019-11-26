@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from encrypted_model_fields.fields import EncryptedCharField
+from fernet_fields import EncryptedCharField
 
 User = get_user_model()
 
