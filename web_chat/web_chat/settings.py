@@ -20,6 +20,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'vnme3vf7332yg)lo*7j&99*&n$!ws67bx2!w_qws8p4pwz!b%#'
+FIELD_ENCRYPTION_KEYS = [
+    "f164ec6bd6fbc4aef5647abc15199da0f9badcc1d2127bde2087ae0d794a9a0b"
+]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -36,9 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'authentication.apps.AuthenticationConfig',
+    'django_crontab',
     'channels',
     'chat',
     ]
+
+CRONJOBS = [
+    ('*/1 * * * *', 'web_chat.cron.delete_messages'),
+    ('*/86400 * * * *', 'web_chat.cron.delete_users')
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -121,7 +130,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 

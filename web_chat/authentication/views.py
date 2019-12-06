@@ -7,6 +7,7 @@ from django.shortcuts import render
 from chat.models import Thread
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
 import json
 # Create your views here.
 
@@ -47,3 +48,15 @@ def create_thread(request):
     }
 
     return JsonResponse(data)
+
+@csrf_exempt
+def last_active(request):
+    json_data = json.loads(request.body)
+    user_id = json_data['user']
+    if CustomUser.objects.filter(id = user_id).exists():
+        User = CustomUser.objects.get(id = user_id)
+        User.last_active = timezone.now()
+        User.save()
+
+    data = {'1': 1,}
+    return  JsonResponse(data)

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from authentication.models import EncryptedCharField
 
 User = get_user_model()
 
@@ -10,9 +11,10 @@ class Thread(models.Model):
 
 class Message(models.Model):
     author = models.ForeignKey(User, related_name='author_messages', on_delete=models.CASCADE)
-    content = models.CharField(max_length=150)
+    content = EncryptedCharField(max_length=150)
     timestamp = models.DateTimeField(auto_now_add=True)
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
+    expiration_time = models.DateTimeField()
 
     def __str__(self):
         return self.author.username

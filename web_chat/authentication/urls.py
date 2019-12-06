@@ -6,4 +6,5 @@ urlpatterns = [
     path('', include('django.contrib.auth.urls')),
     path('', views.HomeView.as_view(), name='home'),
     path('ajax/create_thread/', views.create_thread, name='create thread'),
+    path('ajax/last_active/', views.last_active, name='last active'),
 ]

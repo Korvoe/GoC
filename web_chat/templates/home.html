@@ -6,6 +6,20 @@
 {% block content %}
 {% if user.is_authenticated %}
   Hi {{ user.first_name }} {{ user.last_name}}!
+  <script>
+      let data = JSON.stringify({
+        'user': {{user.id}},
+      });
+    var Xmlhttp = new XMLHttpRequest();
+    Xmlhttp.open('POST', "ajax/last_active/", true);
+    Xmlhttp.responseType = 'json';
+    Xmlhttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+    Xmlhttp.onload = function(){
+      console.log("1");
+    }
+    Xmlhttp.send(data);
+  </script>
+
   {% for User in users%}
     {% if user.username != User.username%}
     <script type="text/javascript" >
