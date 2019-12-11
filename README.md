@@ -24,7 +24,8 @@ How to run:
 1. $ source bin/activate or $ . bin/activate
 2. $ cd web-chat
 3. $ python manage.py runserver or $ python3 manage.py runserver (run django server)
-4. Open the 'localhost/8000' in your browser
+4. $ python manage.py crontab add or $ python3 manage.py crontab add (run cron jobs)
+5. Open the 'localhost/8000' in your browser
 
 FIXED:
 1. [SoS] First attack: /redis-5.0.5
