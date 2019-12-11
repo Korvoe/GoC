@@ -5,7 +5,6 @@ from django.contrib.auth.decorators import login_required
 from chat.models import Thread
 import json
 
-# Create your views here.
 
 @login_required
 def room(request, room_name):

@@ -4,10 +4,8 @@ from Crypto.Cipher import AES
 from django.conf import settings
 from django.core.exceptions import FieldError, ImproperlyConfigured
 from django.utils.functional import cached_property
-import hashlib
-import string
 
-
+#Field which is used for encryption using AES.
 class EncryptedMixin(models.Field):
     def __init__(self, *args, **kwargs):
         if kwargs.get("primary_key"):
@@ -72,14 +70,13 @@ class EncryptedMixin(models.Field):
         finally:
             self._internal_type = "BinaryField"
 
+#Model fields, that inherit EncryptedMixin and default fields for char and email.
 class EncryptedCharField(EncryptedMixin, models.CharField):
     pass
-
 class EncryptedEmailField(EncryptedMixin, models.EmailField):
     pass
 
-
-
+#Custom user model with encrypted fields.
 class CustomUser(AbstractUser):
     pass
     first_name = EncryptedCharField(max_length=50)

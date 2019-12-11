@@ -16,14 +16,17 @@
     var roomName = {{ room_name_json }};
     var username = {{ username }};
 
+    //Open a new websocket connection.
     var chatSocket = new ReconnectingWebSocket(
         'ws://' + window.location.host +
         '/ws/chat/' + roomName + '/');
 
+    //When open, show all the messages.
     chatSocket.onopen = function(e) {
       fetchMessages();
     }
 
+    // When the "new_message" command comes from consumers.py, it is displayed.
     chatSocket.onmessage = function(e) {
         var data = JSON.parse(e.data);
         if (data['command'] === 'new_message')
@@ -44,6 +47,8 @@
         }
     };
 
+    // When user presses "submit", his input and all the data, required for
+    // message model in database is sent to the consumers.py.
     document.querySelector('#chat-message-submit').onclick = function(e) {
         var messageInputDom = document.querySelector('#chat-message-input');
         var message = messageInputDom.value;
@@ -56,10 +61,12 @@
         messageInputDom.value = '';
     };
 
+    //Function to show last 10 messages.
     function fetchMessages() {
       chatSocket.send(JSON.stringify({'command': 'fetch_messages'}));
     }
 
+    //Function to display message.
     function createMessage(message) {
       var content = message['content'];
       var time = message['timestamp'];

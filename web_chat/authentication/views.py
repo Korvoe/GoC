@@ -9,13 +9,15 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 import json
-# Create your views here.
 
+#Sends form to registration template and in case of proper
+#registration redirects user to login.
 class Registration(generic.CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'registration/registration.html'
 
+#Handle get response by sending the set of all users and threads(rooms) back to template.
 class HomeView(TemplateView):
     template_name = "home.html"
     def get(self, request):
@@ -26,6 +28,11 @@ class HomeView(TemplateView):
         return render(request, self.template_name, args)
 
 @csrf_exempt
+#The creation of room. Function receives randomly
+#generated room number and user ids of users in the room.
+#It then creates the thread, if it didn't exist yet. If it exists,
+#it just changes the "room" variable to the existing thread value and, after all,
+#returns the room id.
 def create_thread(request):
     json_data = json.loads(request.body)
     room  = json_data['room_id']
@@ -50,6 +57,8 @@ def create_thread(request):
     return JsonResponse(data)
 
 @csrf_exempt
+#When user logs in, this function is called in order to
+#set his last_active status to current time.
 def last_active(request):
     json_data = json.loads(request.body)
     user_id = json_data['user']

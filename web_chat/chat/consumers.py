@@ -9,7 +9,11 @@ from django.utils import timezone
 
 User = get_user_model()
 
+#This consumers works with the "room.html" and the reconnecting-websocket.
+#It handles the received data, messages and saves them in the database. It
+# sends the existing data from database to the 'room.html' template too.
 class ChatConsumer(WebsocketConsumer):
+    #Shows last 10 messages, that are written in the chat.
     def fetch_messages(self, data):
         messages = Message.last_10_messages(self.room_name)
         content = {
@@ -18,6 +22,9 @@ class ChatConsumer(WebsocketConsumer):
         }
         self.send_message(content)
 
+    #Receives the user's input via websocket, connects it with thread,
+    #that it belongs to  and saves it in the database. It then returns it back to
+    #template, so it can show it.
     def new_message(self, data):
         author = data['from']
         author_user = User.objects.filter(username=author)[0]
@@ -32,6 +39,7 @@ class ChatConsumer(WebsocketConsumer):
         }
         return self.send_chat_message(content)
 
+    #These two methods just convert messages to json format.
     def messages_to_json(self, messages):
         result = []
         for message in messages:
@@ -50,6 +58,7 @@ class ChatConsumer(WebsocketConsumer):
         'new_message': new_message
     }
 
+    #Establish the connection with websocket
     def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name

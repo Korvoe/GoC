@@ -6,6 +6,7 @@
 {% block content %}
 {% if user.is_authenticated %}
   Hi {{ user.first_name }} {{ user.last_name}}!
+  <!-- Settings user's last_active to current time -->
   <script>
       let data = JSON.stringify({
         'user': {{user.id}},
@@ -20,8 +21,10 @@
     Xmlhttp.send(data);
   </script>
 
+  <!-- List all the users of the web-site -->
   {% for User in users%}
     {% if user.username != User.username%}
+    <!-- Hyperlink for every user in the chat. When clicked, creates or opens the room  -->
     <script type="text/javascript" >
       openPage = function(User1_id, User2_id){
       var room_id = Math.floor(Math.random()*10000 + 1);

@@ -13,15 +13,13 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 from dotenv import load_dotenv
 
+#For getting environment variables, set by me.
 load_dotenv()
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+#Basic directory
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
+# Getting SECRET_KEY and FIELD_ENCRYPTION_KEY from environment variables.
 SECRET_KEY = os.getenv('SECRET_KEY')
 FIELD_ENCRYPTION_KEY = os.getenv('FIELD_ENCRYPTION_KEY')
 
@@ -45,9 +43,10 @@ INSTALLED_APPS = [
     'chat',
     ]
 
+# Cron jobs. One works once a minute and another one works once a day.
 CRONJOBS = [
     ('*/1 * * * *', 'web_chat.cron.delete_messages'),
-    ('*/86400 * * * *', 'web_chat.cron.delete_users')
+    ('*/1440 * * * *', 'web_chat.cron.delete_users')
 ]
 
 MIDDLEWARE = [
@@ -60,6 +59,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+#Django built-in security settings
 SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = 'DENY'
 SECURE_CONTENT_TYPE_NOSNIFF = True
@@ -68,6 +68,7 @@ CSRF_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = 'Strict'
 ROOT_URLCONF = 'web_chat.urls'
 
+#The directory of html templates
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -84,6 +85,8 @@ TEMPLATES = [
     },
 ]
 
+#Since our projects uses Django-channels,
+#here are additional configurations for asgi and CHANNEL_LAYERS.
 WSGI_APPLICATION = 'web_chat.wsgi.application'
 ASGI_APPLICATION = 'web_chat.routing.application'
 
@@ -97,7 +100,7 @@ CHANNEL_LAYERS = {
 }
 
 # Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
+#Use SQLite3, which is built-in in Django
 
 DATABASES = {
     'default': {
@@ -149,8 +152,10 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
+#Redirection
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 REGISTRATION_REDIRECT_URL = 'home'
 
+#Set the custom user model as a default.
 AUTH_USER_MODEL = 'authentication.CustomUser'

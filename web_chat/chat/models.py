@@ -4,11 +4,13 @@ from authentication.models import EncryptedCharField
 
 User = get_user_model()
 
-# Create your models here.
+#The thread model, which is the chat "room", that makes the relations between messages and users.
 class Thread(models.Model):
     room_id = models.IntegerField()
     users = models.ManyToManyField(User)
 
+#The message, which is related to User and Thread models. It has got expiration_time,
+#which is the lifetime of the message. If the message is expired, it is deleted by the cron.
 class Message(models.Model):
     author = models.ForeignKey(User, related_name='author_messages', on_delete=models.CASCADE)
     content = EncryptedCharField(max_length=150)
