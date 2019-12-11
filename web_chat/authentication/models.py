@@ -25,17 +25,15 @@ class EncryptedMixin(models.Field):
         self._internal_type = "BinaryField"
         super().__init__(*args, **kwargs)
 
-    def keys(self):
-        key_list = settings.FIELD_ENCRYPTION_KEYS
-        if not isinstance(key_list, (list, tuple)):
-            raise ImproperlyConfigured("FIELD_ENCRYPTION_KEYS should be a list.")
-        return key_list
+    def key(self):
+        key = settings.FIELD_ENCRYPTION_KEY
+        return key
 
     def encrypt(self, data_to_encrypt):
         if not isinstance(data_to_encrypt, str):
             data_to_encrypt = str(data_to_encrypt)
-        keys = self.keys()
-        cipher = AES.new(bytes.fromhex(keys[0]), AES.MODE_GCM)
+        key = self.key()
+        cipher = AES.new(bytes.fromhex(key), AES.MODE_GCM)
         nonce = cipher.nonce
         cypher_text, tag = cipher.encrypt_and_digest(data_to_encrypt.encode())
         return nonce + tag + cypher_text
@@ -45,19 +43,11 @@ class EncryptedMixin(models.Field):
         tag = value[16:32]
         cypher_text = value[32:]
         counter = 0
-        keys = self.keys()
-        num_keys = len(keys[0])
-        while counter < num_keys:
-            cipher = AES.new(
-                bytes.fromhex(keys[counter]), AES.MODE_GCM, nonce=nonce
-            )
-            try:
-                plaintext = cipher.decrypt_and_verify(cypher_text, tag)
-            except ValueError:
-                counter += 1
-                continue
-            return plaintext.decode()
-        raise ValueError("AES Key incorrect or message corrupted")
+        key = self.key()
+        num_keys = len(key)
+        cipher = AES.new(bytes.fromhex(key), AES.MODE_GCM, nonce=nonce)
+        plaintext = cipher.decrypt_and_verify(cypher_text, tag)
+        return plaintext.decode()
 
     def get_internal_type(self):
         return self._internal_type
